@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <!-- Use module imports for Firebase SDK -->
+    <script type="module">
+        // Import the Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, query, orderByChild, equalTo  } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAgEiTqxhDGXBzlt31B5vC-aeMKNNBnUwc",
+            authDomain: "barber-1ac3b.firebaseapp.com",
+            projectId: "barber-1ac3b",
+            storageBucket: "barber-1ac3b.appspot.com",
+            messagingSenderId: "796247123981",
+            appId: "1:796247123981:web:b71d26a4ef70144d6a4d44",
+            databaseURL: "https://barber-1ac3b-default-rtdb.firebaseio.com"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        document.getElementById("registerForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            console.log("Form submitted"); // Log form submission
+            registerUser();
+        });
+
+        function registerUser() {
+            const email = document.getElementById("email").value.trim();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessages = document.getElementById("errorMessages");
+            errorMessages.innerHTML = ''; // Clear previous errors
+
+            console.log("Email:", email); // Log email
+            console.log("Username:", username); // Log username
+            console.log("Password:", password); // Log password
+
+            // Validate email format
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!email.match(emailPattern)) {
+                showAlert("Please enter a valid email address.");
+                errorMessages.innerHTML += "<p>Please enter a valid email address.</p>";
+                return;
+            }
+
+            // Validate username length (1-8 characters)
+            const usernamePattern = /^[a-z]{1,8}$/;
+            if (!username.match(usernamePattern)) {
+                showAlert("Username must be between 1 and 8 characters long and only contain lowercase letters.");
+                errorMessages.innerHTML += "<p>Username must be between 1 and 8 characters long and only contain lowercase letters.</p>";
+                return;
+            }
+
+            // Validate password
+            if (password.length < 6) {
+                showAlert("Password must be at least 6 characters long.");
+                errorMessages.innerHTML += "<p>Password must be at least 6 characters long.</p>";
+                return;
+            }
+            const uppercasePattern = /[A-Z]/;
+            const digitPattern = /[0-9]/;
+            if (!uppercasePattern.test(password) || !digitPattern.test(password)) {
+                showAlert("Password must contain at least one uppercase letter and one digit.");
+                errorMessages.innerHTML += "<p>Password must contain at least one uppercase letter and one digit.</p>";
+                return;
+            }
+
+
+            checkEmailExists(email).then((emailExists) => {
+                if (emailExists) {
+                    showAlert("This email is already in use.");
+                    errorMessages.innerHTML += "<p>This email is already in use.</p>";
+                } else {
+                    createUserWithEmailAndPassword(auth, email, password)
+                        .then((userCredential) => {
+                            const userId = userCredential.user.uid;
+                            const userData = { username, email };
+                            saveUserToDatabase(userId, userData);
+                        })
+                        .catch((error) => {
+                            console.error("Registration error:", error);
+                            showAlert(error.message);
+                            errorMessages.innerHTML += "<p>" + error.message + "</p>";
+                        });
+                }
+            });
+        
+
+
+            // Register user
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const userId = userCredential.user.uid;
+                    const userData = { username, email };
+                    saveUserToDatabase(userId, userData);
+                })
+                .catch((error) => {
+                    console.error("Registration error:", error); // Log registration error
+                    showAlert(error.message);
+                    errorMessages.innerHTML += "<p>" + error.message + "</p>";
+                });
+        }
+
+        function checkEmailExists(email) {
+            const usersRef = ref(db, "Users");
+            const emailQuery = query(usersRef, orderByChild("email"), equalTo(email));
+            return get(emailQuery).then((snapshot) => {
+                return snapshot.exists();
+            });
+        }
+
+        function saveUserToDatabase(userId, userData) {
+            set(ref(db, "Users/" + userId), userData)
+                .then(() => {
+                    alert("User registered successfully!");
+                    // Redirect to login or home page
+                    window.location.href = "homepage.html";
+                })
+                .catch((error) => {
+                    console.error("Error saving user data:", error); // Log saving error
+                    showAlert("Error saving user data: " + error.message);
+                    document.getElementById("errorMessages").innerHTML += "<p>Error saving user data: " + error.message + "</p>";
+                });
+        }
+
+        function showAlert(message) {
+            alert(message); // Simple alert pop-up
+        }
+    </script>
+
+<style>
+    /* Centering the legends image */
+    #legendsImage {
+        display: block; /* Makes the image a block element */
+        margin: 0 auto; /* Centers the image horizontally */
+        height: 20%; /* Adjust height as needed */
+    }
+</style>
+
+</head>
+<body>
+    <img id="legendsImage" src="assets/images/legends.jpg" alt="Legends Barber">
+    <h2>Register</h2>
+    <form id="registerForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Register</button>
+        <div id="errorMessages" style="color: red;"></div>
+
+        <p>Already have an account?</br> <a href="index.html">Login here</a></p>
+    </form>
+
+    <footer>
+        <p>&copy; 2024 Legends Barber. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <!-- Use module imports for Firebase SDK -->
+    <script type="module">
+        // Import the Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAgEiTqxhDGXBzlt31B5vC-aeMKNNBnUwc",
+            authDomain: "barber-1ac3b.firebaseapp.com",
+            projectId: "barber-1ac3b",
+            storageBucket: "barber-1ac3b.appspot.com",
+            messagingSenderId: "796247123981",
+            appId: "1:796247123981:web:b71d26a4ef70144d6a4d44",
+            databaseURL: "https://barber-1ac3b-default-rtdb.firebaseio.com"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            console.log("Login form submitted"); // Log form submission
+            loginUser();
+        });
+
+        function loginUser() {
+            const emailUsername = document.getElementById("email_username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessages = document.getElementById("errorMessages");
+            errorMessages.innerHTML = ''; // Clear previous errors
+
+            // Validate email or username
+            if (emailUsername === "") {
+                showAlert("Please enter your email or username.");
+                errorMessages.innerHTML += "<p>Please enter your email or username.</p>";
+                return;
+            }
+
+            if (password === "") {
+                showAlert("Please enter your password.");
+                errorMessages.innerHTML += "<p>Please enter your password.</p>";
+                return;
+            }
+
+            // Check if it's an email or username
+            if (emailUsername.includes("@")) {
+                signInWithEmail(emailUsername, password);
+            } else {
+                fetchEmailByUsername(emailUsername, (email) => {
+                    if (email) {
+                        signInWithEmail(email, password);
+                    } else {
+                        showAlert("Username not found.");
+                        errorMessages.innerHTML += "<p>Username not found.</p>";
+                    }
+                });
+            }
+        }
+
+        function signInWithEmail(email, password) {
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    const userId = auth.currentUser.uid;  // Get the logged-in user's UID
+                    alert("Login successful!");
+
+                     // Store the user ID in the local storage or pass it to the next page
+                     localStorage.setItem("currentUserId", userId);
+                    
+                     // Redirect to home page
+                    window.location.href = "homepage.html";
+                })
+                .catch((error) => {
+                    console.error("Login error:", error); // Log login error
+                    showAlert(error.message);
+                    document.getElementById("errorMessages").innerHTML += "<p>" + error.message + "</p>";
+                });
+        }
+
+        function fetchEmailByUsername(username, callback) {
+            const usersRef = ref(db, "Users");
+            get(usersRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const userData = childSnapshot.val();
+                        if (userData.username === username) {
+                            callback(userData.email); // Return the email if username matches
+                            return;
+                        }
+                    });
+                    callback(null); // If no matching username found
+                } else {
+                    showAlert("No users found.");
+                    callback(null);
+                }
+            }).catch((error) => {
+                console.error("Error fetching users:", error);
+                showAlert("Error fetching users: " + error.message);
+                callback(null);
+            });
+        }
+
+        function showAlert(message) {
+            alert(message); // Simple alert pop-up
+        }
+    </script>
+
+<style>
+    /* Centering the legends image */
+    #legendsImage {
+        display: block; /* Makes the image a block element */
+        margin: 0 auto; /* Centers the image horizontally */
+        height: 20%; /* Adjust height as needed */
+    }
+</style>
+
+</head>
+<body>
+    <img id="legendsImage" src="assets/images/legends.jpg" alt="Legends Barber">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="email_username" placeholder="Email or Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <div id="errorMessages" style="color: red;"></div>
+
+        <p>Dont have an account?</br> <a href="register.html">Register here</a></p>
+    </form>
+
+    <footer>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-instagram elementor-repeater-item-d550229" href="http://instagram.com/legends_barber" target="_blank">
+                <span class="elementor-screen-only">Instagram</span>
+                <i class="fab fa-instagram"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-facebook-f elementor-repeater-item-9758c9c" href="https://www.facebook.com/Legends-Barbershop-513782575440683/" target="_blank">
+                <span class="elementor-screen-only">Facebook-f</span>
+                <i class="fab fa-facebook-f"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-tiktok elementor-repeater-item-82b3bad" href="https://www.tiktok.com/@legends_barber_" target="_blank">
+                <span class="elementor-screen-only">Tiktok</span>
+                <i class="fab fa-tiktok"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-b72bfac" href="https://twitter.com/legends_barber_" target="_blank">
+                <span class="elementor-screen-only">Twitter</span>
+                <i class="fab fa-twitter"></i>					
+            </a>
+        </span>
+        <p>&copy; 2024 Your Barber Shop Name. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Legends Barber Performance</title>
+        <link rel="stylesheet" href="assets/styles.css"> <!-- Assuming you have a stylesheet for your layout -->
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #ffffff;
+                color: #121212;
+            }
+    
+            label {
+                display: block;
+                margin-bottom: 10px;
+            }
+    
+            select {
+                width: 200px;
+                padding: 5px;
+                margin-bottom: 20px;
+                background-color: #f2f2f2;
+                color: #121212;
+            }
+    
+            button {
+                padding: 10px 20px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                cursor: pointer;
+                margin-right: 10px;
+            }
+    
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+    
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+    
+            th {
+                background-color: #f2f2f2;
+            }
+    
+            .go-back {
+                margin-top: 20px;
+            }
+    
+            .stars {
+                display: inline-block;
+                color: gold;
+                font-size: 1.5em;
+                margin-top: 10px;
+            }
+    
+            /* Centering the legends image */
+            #legendsImage {
+                display: block; /* Makes the image a block element */
+                margin: 0 auto; /* Centers the image horizontally */
+                height: 20%; /* Adjust height as needed */
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a href="homepage.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="bookings.html">Bookings</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </header>
+    
+        <main>
+            <img id="legendsImage" src="assets/images/legends.jpg" alt="Legends Barber">
+            <h2>Top 5 Rated Barbers</h2>
+        <table id="topRatedBarbersTable">
+            <thead>
+                <tr>
+                    <th>Barber</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody id="topRatedBarbersData">
+                <!-- Top rated barbers data will be displayed here -->
+            </tbody>
+        </table>
+    
+        <h2><u><b>Barber Shop Performance Tracker</b></u></h2>
+    
+        <form id="performanceForm">
+            <label for="shop">Select Shop:</label>
+            <select id="shop">
+                <option value="Mall Of The South">Mall Of The South</option>
+                <option value="Southgate Mall">Southgate Mall</option>
+                <option value="Maponya Mall">Maponya Mall</option>
+                <option value="Newtown Junction">Newtown Junction</option>
+            </select>
+    
+            <label for="year">Select Year:</label>
+            <select id="year">
+                <option value="2024">2024</option>
+            </select>
+    
+            <label for="month">Select Month:</label>
+            <select id="month">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+            </select>
+    
+            <label for="employee">Select Employee:</label>
+            <select id="employee">
+                    <optionv alue="Barber 1">John Doe</option>
+                    <option value="Barber 2">Jane Smith</option>
+                    <option value="Barber 3">Paul</option>
+                    <option value="Barber 4">Mike</option>
+                    <option value="Barber 5">Andrew</option>
+                <!-- Add more barbers here -->
+            </select>
+    
+            <button type="button" style="color: black;" onclick="fetchPerformance()">Fetch Performance</button>
+        </form>
+    
+        <div id="selectedBarberRating"></div>
+    
+        <h2>Performance Details</h2>
+        <table id="performanceTable">
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody id="performanceData">
+                <!-- Performance data will be displayed here -->
+            </tbody>
+        </table>
+    </br>
+    <p> </p>
+    </br>
+				
+    <script>
+        // Function to calculate and display star rating
+        function displayStarRating(totalPoints) {
+            const maxPoints = 30; // Max points possible
+            const ratingOutOf5 = (totalPoints / maxPoints) * 5;
+            const fullStars = Math.floor(ratingOutOf5);
+            const halfStar = ratingOutOf5 % 1 >= 0.5 ? 1 : 0;
+
+            let stars = '';
+            for (let i = 0; i < fullStars; i++) {
+                stars += '★';
+            }
+            if (halfStar) {
+                stars += '☆';
+            }
+            while (stars.length < 5) {
+                stars += '☆';
+            }
+
+            return stars;
+        }
+
+        // Function to fetch performance
+        function fetchPerformance() {
+            const shop = document.getElementById('shop').value;
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const employee = document.getElementById('employee').value;
+
+            const performanceKey = `${shop}-${year}-${month}-${employee}`;
+            const performanceDetails = JSON.parse(localStorage.getItem(performanceKey));
+
+            if (performanceDetails) {
+                const tableBody = document.getElementById('performanceData');
+                tableBody.innerHTML = ''; // Clear previous data
+
+                performanceDetails.performanceData.forEach(data => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).innerHTML = data.criteria;
+                    row.insertCell(1).innerHTML = data.points;
+                });
+
+                // Display rating message
+                const totalPoints = performanceDetails.performanceData.find(data => data.criteria === 'Total Points').points;
+                const ratingStars = displayStarRating(totalPoints);
+                document.getElementById('selectedBarberRating').innerText = `${employee}: ${ratingStars}`;
+            } else {
+                alert('No performance data found for the selected criteria.');
+                const tableBody = document.getElementById('performanceData');
+                tableBody.innerHTML = ''; // Clear previous data
+            }
+        }
+
+            // Function to fetch top 5 rated barbers from localStorage
+            function fetchTopRatedBarbers() {
+            const allPerformanceKeys = Object.keys(localStorage);
+            const allPerformanceData = allPerformanceKeys.map(key => JSON.parse(localStorage.getItem(key)));
+
+            const barberRatings = {};
+
+            allPerformanceData.forEach(performance => {
+                const barber = performance.employee; // Corrected property name
+                const totalPoints = performance.score; // Corrected property name
+
+                if (!barberRatings[barber]) {
+                    barberRatings[barber] = { totalPoints, count: 1 };
+                } else {
+                    barberRatings[barber].totalPoints += totalPoints;
+                    barberRatings[barber].count += 1;
+                }
+            });
+
+            const averageRatings = Object.entries(barberRatings).map(([barber, { totalPoints, count }]) => ({
+                barber,
+                averageRating: totalPoints / count
+            }));
+
+            averageRatings.sort((a, b) => b.averageRating - a.averageRating);
+
+            const topRatedBarbers = averageRatings.slice(0, 5);
+
+            const tableBody = document.getElementById('topRatedBarbersData');
+            tableBody.innerHTML = ''; // Clear previous data
+
+            topRatedBarbers.forEach(({ barber, averageRating }) => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).innerHTML = barber;
+                row.insertCell(1).innerHTML = displayStarRating(averageRating);
+            });
+        }
+
+        // Initialize page with top 5 rated barbers
+        window.onload = function () {
+            fetchTopRatedBarbers();
+        };
+				
+						// Go back function
+						function goBack() {
+							window.history.back();
+						}
+					</script>
+            <br>
+            
+        </main>
+    
+        <footer>
+            <span class="elementor-grid-item">
+                <a class="elementor-icon elementor-social-icon elementor-social-icon-instagram elementor-repeater-item-d550229" href="http://instagram.com/legends_barber" target="_blank">
+                    <span class="elementor-screen-only">Instagram</span>
+                    <i class="fab fa-instagram"></i>					
+                </a>
+            </span>
+            <span class="elementor-grid-item">
+                <a class="elementor-icon elementor-social-icon elementor-social-icon-facebook-f elementor-repeater-item-9758c9c" href="https://www.facebook.com/Legends-Barbershop-513782575440683/" target="_blank">
+                    <span class="elementor-screen-only">Facebook-f</span>
+                    <i class="fab fa-facebook-f"></i>					
+                </a>
+            </span>
+            <span class="elementor-grid-item">
+                <a class="elementor-icon elementor-social-icon elementor-social-icon-tiktok elementor-repeater-item-82b3bad" href="https://www.tiktok.com/@legends_barber_" target="_blank">
+                    <span class="elementor-screen-only">Tiktok</span>
+                    <i class="fab fa-tiktok"></i>					
+                </a>
+            </span>
+            <span class="elementor-grid-item">
+                <a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-b72bfac" href="https://twitter.com/legends_barber_" target="_blank">
+                    <span class="elementor-screen-only">Twitter</span>
+                    <i class="fab fa-twitter"></i>					
+                </a>
+            </span>
+            <p>&copy; 2024 Your Barber Shop Name. All rights reserved.</p>
+        </footer>
+    
+    </body>
+    </html>

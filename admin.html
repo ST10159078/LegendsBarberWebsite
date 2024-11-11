@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="text-center">Admin Dashboard</h2>
+        
+        <h3>Manage Users</h3>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="usersTable">
+                <!-- User rows will be populated here by JavaScript -->
+            </tbody>
+        </table>
+
+        <h3>Manage Appointments</h3>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Appointment ID</th>
+                    <th>User</th>
+                    <th>Barber</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Services</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentsTable">
+                <!-- Appointment rows will be populated here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Sample data (replace with actual database calls)
+        const users = [
+            { id: '1', username: 'Tebza', email: 'tebza@example.com' },
+            { id: '2', username: 'JohnDoe', email: 'john@example.com' }
+        ];
+
+        const appointments = [
+            { id: '1', user: 'Tebza', barber: 'Andrew', date: '2024-11-10', time: '10:00 AM', services: 'Classic Cut' },
+            { id: '2', user: 'JohnDoe', barber: 'John', date: '2024-11-12', time: '1:00 PM', services: 'Beard Trim' }
+        ];
+
+        // Function to display users in the table
+        function displayUsers() {
+            const usersTable = document.getElementById('usersTable');
+            usersTable.innerHTML = ''; // Clear the table first
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td class="actions">
+                        <button class="btn btn-primary btn-sm" onclick="editUser('${user.id}')">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">Delete</button>
+                    </td>
+                `;
+                usersTable.appendChild(row);
+            });
+        }
+
+        // Function to display appointments in the table
+        function displayAppointments() {
+            const appointmentsTable = document.getElementById('appointmentsTable');
+            appointmentsTable.innerHTML = ''; // Clear the table first
+            appointments.forEach(appointment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${appointment.id}</td>
+                    <td>${appointment.user}</td>
+                    <td>${appointment.barber}</td>
+                    <td>${appointment.date}</td>
+                    <td>${appointment.time}</td>
+                    <td>${appointment.services}</td>
+                    <td class="actions">
+                        <button class="btn btn-primary btn-sm" onclick="editAppointment('${appointment.id}')">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteAppointment('${appointment.id}')">Delete</button>
+                    </td>
+                `;
+                appointmentsTable.appendChild(row);
+            });
+        }
+
+        // Function to edit a user
+        function editUser(userId) {
+            alert(`Edit User ID: ${userId}`);
+            // You would open a form to edit the user details
+            // and save the changes back to the database.
+        }
+
+        // Function to delete a user
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                alert(`Deleted User ID: ${userId}`);
+                // Remove user from the database
+                // and refresh the users table.
+            }
+        }
+
+        // Function to edit an appointment
+        function editAppointment(appointmentId) {
+            alert(`Edit Appointment ID: ${appointmentId}`);
+            // You would open a form to edit the appointment details
+            // and save the changes back to the database.
+        }
+
+        // Function to delete an appointment
+        function deleteAppointment(appointmentId) {
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                alert(`Deleted Appointment ID: ${appointmentId}`);
+                // Remove appointment from the database
+                // and refresh the appointments table.
+            }
+        }
+
+        // Initialize tables on page load
+        window.onload = () => {
+            displayUsers();
+            displayAppointments();
+        }
+    </script>
+</body>
+</html>

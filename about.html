@@ -1,0 +1,147 @@
+<!-- about.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>About Us - Legends Barber</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <style>
+        /* Centering the legends image */
+        #legendsImage {
+            display: block; /* Makes the image a block element */
+            margin: 0 auto; /* Centers the image horizontally */
+            height: 20%; /* Adjust height as needed */
+        }
+        /* Centering the team section */
+        #team-list {
+            text-align: center; /* Center text within the section */
+            margin: 20px 0; /* Add space above and below */
+        }
+
+        .team {
+            display: inline-block; /* Allows for horizontal centering */
+            width: 30%; /* Adjust width as needed */
+            margin: 0 10px; /* Space around each team card */
+            background-color: #333; /* Background color for team section */
+            color: #fff; /* Text color */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            padding: 10px; /* Padding inside each card */
+        }
+
+        .team img {
+            width: 100%; /* Make image take the full width of the team card */
+            height: auto; /* Maintain aspect ratio */
+            max-height: 250px; /* Set a maximum height for images */
+            border-radius: 15px 15px 0 0; /* Round the top corners of the image */
+        }
+
+        .barber img {
+            width: 100%; /* Make image take the full width of the team card */
+            height: auto; /* Maintain aspect ratio */
+            max-height: 150px; /* Set a maximum height for images */
+            border-radius: 15px 15px 0 0; /* Round the top corners of the image */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="homepage.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="profile.html">Profile</a>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about">
+        <img id="legendsImage" src="assets/images/legends.jpg" alt="Legends Barber">
+        <h2>About Legendary Barber</h2>
+        <p>Legendary Barber offers premium grooming services with a focus on style and sophistication. Our expert barbers provide precision haircuts, refreshing scalp massages, and personalized care. Experience luxury and embrace your power with Eleven.</p>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="locations">
+        <h3>Legendary Barber Locations</h3>
+        <div id="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d229208.42498478087!2d28.022967924238934!3d-26.15169760655429!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1slegends%20barbershop!5e0!3m2!1sen!2sza!4v1730645089575!5m2!1sen!2sza" width="600" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </section>
+
+    <!-- Barbers Section -->
+    <section id="barbers">
+        <h3>Our Barbers</h3>
+        <div class="barber-list">
+            <!-- Barber 1 -->
+            <div class="barber">
+                <img src="assets/images/barber1.jpg" alt="John Doe">
+                <h4>John Doe</h4></br>
+                <p>Location: Mall of the South</p></br>
+                <p>Skills: Cutting, Styling</p></br>
+                <p>Rating: 4.9</p>
+            </div>
+            <!-- Barber 2 -->
+            <div class="barber">
+                <img src="assets/images/barber2.jpg" alt="Jane Smith">
+                <h4>Jane Smith</h4></br>
+                <p>Location: Newtown Junction</p></br>
+                <p>Skills: Fading, Beard Grooming</p></br>
+                <p>Rating: 4.8</p>
+            </div>
+            <!-- Barber 3 -->
+            <div class="barber">
+                <img src="assets/images/barber_2.png" alt="Paul">
+                <h4>Paul</h4></br>
+                <p>Location: Mall of Africa</p></br>
+                <p>Skills: Coloring, Cutting</p></br>
+                <p>Rating: 4.7</p>
+            </div>
+            <!-- Barber 4 -->
+            <div class="barber">
+                <img src="assets/images/profile_2.png" alt="Mike">
+                <h4>Mike</h4></br>
+                <p>Location: Sandton City</p></br>
+                <p>Skills: Styling, Hot Towel Shave</p></br>
+                <p>Rating: 4.8</p>
+            </div>
+        </div>
+    </section>
+
+    <h3><a href="PerformanceCalculation.html">See how barbers are rated</a></h3>
+
+    <section id="team-list">
+        <h3>The Team</h3>
+        <div class="team">
+            <img id="teamImage" src="assets/images/team.jpg" alt="team">
+            <p>Our dedicated team of professionals is here to provide you with the best grooming experience.</p>
+        </div>
+    </section>
+
+    <footer>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-instagram elementor-repeater-item-d550229" href="http://instagram.com/legends_barber" target="_blank">
+                <span class="elementor-screen-only">Instagram</span>
+                <i class="fab fa-instagram"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-facebook-f elementor-repeater-item-9758c9c" href="https://www.facebook.com/Legends-Barbershop-513782575440683/" target="_blank">
+                <span class="elementor-screen-only">Facebook-f</span>
+                <i class="fab fa-facebook-f"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-tiktok elementor-repeater-item-82b3bad" href="https://www.tiktok.com/@legends_barber_" target="_blank">
+                <span class="elementor-screen-only">Tiktok</span>
+                <i class="fab fa-tiktok"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-b72bfac" href="https://twitter.com/legends_barber_" target="_blank">
+                <span class="elementor-screen-only">Twitter</span>
+                <i class="fab fa-twitter"></i>					
+            </a>
+        </span>
+        <p>&copy; 2024 Your Barber Shop Name. All rights reserved.</p>
+    </footer>
+</body>
+</html>

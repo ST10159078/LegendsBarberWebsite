@@ -1,0 +1,327 @@
+<!-- bookings.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bookings - Legends Barber</title>
+    <link rel="stylesheet" href="assets/styles.css">
+   <!--<script src="assets/scripts.js"></script> -->
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #333;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        /* Main Content Styles */
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Booking Form Styles */
+        #booking-form {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        #booking-form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        #booking-form select, #booking-form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #bookings {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        .column {
+            flex: 1;
+            margin: 0 10px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .column h3 {
+            text-align: center;
+        }
+
+        #activeBooking, #bookingHistory {
+            min-height: 100px; /* Ensures some height even if empty */
+        }
+        
+        /* Centering the legends image */
+        #legendsImage {
+            display: block; /* Makes the image a block element */
+            margin: 0 auto; /* Centers the image horizontally */
+            height: 20%; /* Adjust height as needed */
+        }
+    
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="homepage.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="profile.html">Profile</a>
+    </nav>
+
+    <img id="legendsImage" src="assets/images/legends.jpg" alt="Legends Barber">
+    <h2>Book an Appointment</h2>
+
+    <!-- Booking Form -->
+    <section id="appointmentForm" onsubmit="submitBooking(); return false;">
+        <form id="bookingForm">
+            <label for="location">Location:</label>
+            <select id="location">
+                <option>Mall of the South</option>
+                <option>Newtown Junction</option>
+                <option>Mall of Africa</option>
+                <option>Sandton City</option>
+            </select>
+
+            <label for="title">Service:</label>
+            <select id="title">
+                <option>Classic Cut</option>
+                <option>Fade</option>
+                <option>Beard Grooming</option>
+                <option>Hot Towel Shave</option>
+                <option>Coloring</option>
+            </select>
+
+            <label for="barber">Barber:</label>
+            <select id="barber">
+                <option>John Doe</option>
+                <option>Jane Smith</option>
+                <option>Paul</option>
+                <option>Mike</option>
+                <option>Andrew</option>
+            </select>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" required>
+
+            <!-- Time Slot Selection -->
+            <label for="time">Time Slot:</label>
+            <select id="time">
+                <option>09:00 AM - 09:25 AM</option>
+                <option>09:30 AM - 09:55 AM</option>
+                <option>10:00 AM - 10:25 AM</option>
+                <option>10:30 AM - 10:55 AM</option>
+                <option>11:00 AM - 11:25 AM</option>
+                <option>11:30 AM - 11:55 AM</option>
+                <option>12:00 PM - 12:25 PM</option>
+                <option>12:30 PM - 12:55 PM</option>
+                <option>01:00 PM - 01:25 PM</option>
+                <option>01:30 PM - 01:55 PM</option>
+                <option>02:00 PM - 02:25 PM</option>
+                <option>02:30 PM - 02:55 PM</option>
+                <option>03:00 PM - 03:25 PM</option>
+                <option>03:30 PM - 03:55 PM</option>
+                <option>04:00 PM - 04:25 PM</option>
+                <option>04:30 PM - 04:55 PM</option>
+                <option>05:00 PM - 05:25 PM</option>
+            </select>
+
+            <button type="submit">Book Now</button>
+        </form>
+    </section>
+
+    <!-- Active and Past Bookings Section -->
+    <section id="bookings">
+        <div class="column">
+            <h3>Book an Appointment</h3>
+            <div id="activeBooking"></div>
+        </div>
+        <div class="column">
+            <h3>Your Active Bookings</h3>
+            <div id="activeBookingsList"></div>
+        </div>
+        <div class="column">
+            <h3>Booking History</h3>
+            <div id="bookingHistory"></div>
+        </div>
+    </section>
+    <script src="assets/scripts.js"></script>
+
+    <footer>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-instagram elementor-repeater-item-d550229" href="http://instagram.com/legends_barber" target="_blank">
+                <span class="elementor-screen-only">Instagram</span>
+                <i class="fab fa-instagram"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-facebook-f elementor-repeater-item-9758c9c" href="https://www.facebook.com/Legends-Barbershop-513782575440683/" target="_blank">
+                <span class="elementor-screen-only">Facebook-f</span>
+                <i class="fab fa-facebook-f"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-tiktok elementor-repeater-item-82b3bad" href="https://www.tiktok.com/@legends_barber_" target="_blank">
+                <span class="elementor-screen-only">Tiktok</span>
+                <i class="fab fa-tiktok"></i>					
+            </a>
+        </span>
+        <span class="elementor-grid-item">
+            <a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-b72bfac" href="https://twitter.com/legends_barber_" target="_blank">
+                <span class="elementor-screen-only">Twitter</span>
+                <i class="fab fa-twitter"></i>					
+            </a>
+        </span>
+        <p>&copy; 2024 Your Barber Shop Name. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+        import { getDatabase, ref, get, query, orderByChild, equalTo, onValue } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAgEiTqxhDGXBzlt31B5vC-aeMKNNBnUwc",
+            authDomain: "barber-1ac3b.firebaseapp.com",
+            projectId: "barber-1ac3b",
+            storageBucket: "barber-1ac3b.appspot.com",
+            messagingSenderId: "796247123981",
+            appId: "1:796247123981:web:b71d26a4ef70144d6a4d44",
+            databaseURL: "https://barber-1ac3b-default-rtdb.firebaseio.com"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Fetch user bookings
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userId = user.uid;
+                loadActiveBookings(userId);
+            } else {
+                // Redirect to login page if not logged in
+                window.location.href = "index.html";
+            }
+        });
+
+        function loadActiveBookings(userId) {
+            const bookingsRef = ref(db, 'Bookings');
+            const userBookingsQuery = query(bookingsRef, orderByChild('userId'), equalTo(userId));
+
+            onValue(userBookingsQuery, (snapshot) => {
+                const currentDate = new Date();
+                const activeBookingsList = document.getElementById("activeBookingsList");
+                activeBookingsList.innerHTML = ''; // Clear previous entries
+
+                snapshot.forEach((childSnapshot) => {
+                    const booking = childSnapshot.val();
+                    const bookingDate = new Date(booking.date); // Convert the date string to Date object
+                    
+                    if (bookingDate >= currentDate) { // Check if the booking date is in the future
+                        activeBookingsList.innerHTML += `
+                            <div>
+                                Booking Details: </br> Barber: <strong>${booking.barber}</strong> 
+                                </br> Date: <strong>${booking.date}</strong> 
+                                </br> Time: <strong>${booking.time}</strong>
+                                <br>Location: <strong>${booking.location}</strong>
+                                <br><br>
+                            </div>
+                        `;
+                    }
+                });
+
+                if (activeBookingsList.innerHTML === '') {
+                    activeBookingsList.innerHTML = "<p>No active bookings found.</p>";
+                }
+            });
+        }
+
+
+        //bookingHistory
+        // Fetch user bookings
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userId = user.uid;
+                loadBookingHistory(userId);
+            } else {
+                // Redirect to login page if not logged in
+                window.location.href = "index.html";
+            }
+        });
+
+        function loadBookingHistory(userId) {
+    const bookingsRef = ref(db, 'Bookings');
+    const userBookingsQuery = query(bookingsRef, orderByChild('userId'), equalTo(userId));
+
+    onValue(userBookingsQuery, (snapshot) => {
+        const currentDate = new Date();
+        const bookingHistory = document.getElementById("bookingHistory");
+        bookingHistory.innerHTML = ''; // Clear previous entries
+
+        snapshot.forEach((childSnapshot) => {
+            const booking = childSnapshot.val();
+            const bookingDate = new Date(booking.date); // Convert the date string to Date object
+            
+            if (bookingDate < currentDate) { // Check if the booking date is in the past
+                bookingHistory.innerHTML += `
+                    <div>
+                        Booking Details: </br> Barber: <strong>${booking.barber}</strong> 
+                        </br> Date: <strong>${booking.date}</strong> 
+                        </br> Time: <strong>${booking.time}</strong>
+                        <br>Location: <strong>${booking.location}</strong>
+                        <br><br>
+                    </div>
+                `;
+            }
+        });
+
+        if (bookingHistory.innerHTML === '') {
+            bookingHistory.innerHTML = "<p>No past bookings found.</p>";
+        }
+    });
+}
+
+
+    
+
+
+    </script>
+</body>
+</html>
